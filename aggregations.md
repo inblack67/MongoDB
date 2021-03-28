@@ -139,3 +139,51 @@ db.persons.aggregate([
     },
 ]).pretty()
 ```
+
+## $count
+
+- Must be the last stage of aggregation
+- O/P => Total Docs In Person Collection
+- "allDocumentsCount" => built in
+- 0.21 sec
+```sh
+db.persons.aggregate([
+    {
+        $count: "allDocumentsCount"
+    }
+])
+```
+- $count is very fast => server side calculation => no docs returned
+
+- Count method of Find is the wrapper of $count aggregation
+- 0.21 sec (server side)
+```sh
+db.persons.find({}).count()
+```
+
+
+### Client Side Counting => Iterating over the docs => slower
+- 1.4 sec
+```sh
+db.persons.aggregate([]).itcount()
+```
+
+- 1.7 sec
+```sh
+db.persons.aggregate([]).toArray().length
+```
+- $group & $count
+
+- Count the number of countries => unique ofc
+```sh
+db.persons.aggregate([
+{
+       $group: {
+        _id: "$company.location.country"
+    }
+},
+{
+    $count: "numberOfCountries"
+}
+])
+```
