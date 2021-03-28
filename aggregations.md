@@ -79,3 +79,63 @@ db.persons.aggregate([
 - Output will be like this - 
 { "_id" : { "age" : 23, "gender" : "female" } }
 ```
+
+## $match & $group
+```sh
+db.persons.aggregate([
+    {
+        $match: {
+            favoriteFruit: "banana"
+        },
+    },
+    {
+        $group: {
+            _id: {
+                age: "$age",
+                isActive: "$isActive",
+                favoriteFruit: "$favoriteFruit"
+            }
+        }
+    }
+]).pretty()
+```
+
+- No O/P => as the result of $group query will have _id field only
+```sh
+db.persons.aggregate([
+    {
+        $group: {
+            _id: {
+                age: "$age",
+                isActive: "$isActive",
+                favoriteFruit: "$favoriteFruit"
+            }
+        }
+    },
+    {
+        $match: {
+            favoriteFruit: "banana"
+        },
+    },
+]).pretty()
+```
+
+- Works
+```sh
+db.persons.aggregate([
+    {
+        $group: {
+            _id: {
+                age: "$age",
+                isActive: "$isActive",
+                favoriteFruit: "$favoriteFruit"
+            }
+        }
+    },
+    {
+        $match: {
+            "_id.favoriteFruit": "banana" 
+        },
+    },
+]).pretty()
+```
