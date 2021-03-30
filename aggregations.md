@@ -282,3 +282,12 @@ db.persons.aggregate([
     }
 ]).pretty()
 ```
+
+## $limit
+```sh
+db.persons.aggregate([
+    {
+        $limit: 2
+    }
+]).pretty()
+```
