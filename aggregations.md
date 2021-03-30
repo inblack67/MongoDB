@@ -291,3 +291,34 @@ db.persons.aggregate([
     }
 ]).pretty()
 ```
+
+## $unwind
+- Array => splits doc by each element of an array field. Rest of the fields will be same
+
+- $unwind & $project
+```sh
+db.persons.aggregate([
+    {
+        $unwind: "$tags"
+    },
+    {
+        $project: {
+            name: 1,
+            tags: 1,
+        }
+    }
+]).pretty()
+```
+- $unwind & $group
+```sh
+db.persons.aggregate([
+    {
+        $unwind: "$tags" 
+    },
+    {
+        $group: {
+            _id: "$tags"
+        }
+    },
+]).pretty()
+```
