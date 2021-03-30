@@ -187,3 +187,53 @@ db.persons.aggregate([
 }
 ])
 ```
+
+## $sort
+- 1 => ASC
+- -1 => DESC
+- First sort by age, then gender then eyeColor
+```sh
+db.persons.aggregate([
+    {
+        $sort: {
+            age: -1,
+            gender: 1,
+            eyeColor: 1
+        }
+    }
+]).pretty()
+```
+
+- $sort & $group
+```sh
+db.persons.aggregate([
+    {
+        $group: {
+            _id: "$age"
+        }
+    },
+    {
+        $sort: {
+            _id: -1
+        }
+    }
+]).pretty()
+
+db.persons.aggregate([
+    {
+        $group: {
+            _id: {
+                age: "$age",
+                eyeColor: "$eyeColor",
+                gender: "$gender"
+            } 
+        }
+    },
+    {
+        $sort: {
+            "_id.gender": 1,
+            "_id.age": -1
+        }
+    }
+]).pretty()
+```
