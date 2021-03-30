@@ -144,7 +144,7 @@ db.persons.aggregate([
 
 - Must be the last stage of aggregation
 - O/P => Total Docs In Person Collection
-- "allDocumentsCount" => built in
+- "allDocumentsCount" => placeholder key (custom) for count's value 
 - 0.21 sec
 ```sh
 db.persons.aggregate([
@@ -233,6 +233,51 @@ db.persons.aggregate([
         $sort: {
             "_id.gender": 1,
             "_id.age": -1
+        }
+    }
+]).pretty()
+```
+## $project
+- Choose what you need (graphql?)
+- 0 => Exclude
+- 1 => Include
+- _id included by default
+```sh
+db.persons.aggregate([
+    {
+        $project: {
+            name: 1,
+            "company.title": 1
+        }
+    }
+]).pretty()
+```
+- Exclude _id
+- All fields except _id will be displayed
+```sh
+db.persons.aggregate([
+    {
+        $project: {
+            _id: 0
+        }
+    },
+    {
+        $count: "total"
+    }
+]).pretty()
+```
+- If only exluding conditions are written => rest of the fields are shown, else only the included ones
+
+- Restructured Results
+```sh
+db.persons.aggregate([
+    {
+        $project: {
+            _id: 0,
+            customInfo: {
+                eyes: "$eyeColor",
+                sex: "$gender"
+            }
         }
     }
 ]).pretty()
