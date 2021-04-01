@@ -383,3 +383,68 @@ db.persons.aggregate([
     }
 ]).pretty()
 ```
+## Unary Operators
+- Usually used in the **$project** stage
+- With $group => unary operators can only be used with the conjuction of accumulators
+
+## $type
+- Gives BSON type
+```sh
+db.persons.aggregate([
+    {
+        $project: {
+            name: 1,
+            eyeColorType: {
+                $type: "$eyeColor"
+            },
+            ageType: {
+                $type: "$age"
+            }
+        }
+    }
+]).pretty()
+```
+- O/P => 
+```sh
+{
+        "_id" : ObjectId("w051c...."),
+        "name" : "Franco Ochoa",
+        "eyeColorType" : "string",
+        "ageType" : "int"
+}
+```
+- Types => 
+    - string
+    - int
+    - object
+    - array
+
+## $out
+- Must be the last stage in the pipeline
+- If o/p collection does not exist, it will be created automagically
+```sh
+db.persons.aggregate([
+    {
+        $project: {
+            name: 1,
+            eyeColorType: {
+                $type: "$eyeColor"
+            },
+            ageType: {
+                $type: "$age"
+            }
+        }
+    },
+    {
+        $out: "eyeColorsByAge"
+    }
+]).pretty()
+```
+## allowDiskUse
+- All aggregation stages can use max 100MB of RAM
+- Server will throw an error if RAM limit exceeded
+- Following option will enable MongoDB to write stages data to the temporal files instead of RAM
+```sh
+db.persons.aggregate([], { allowDiskUse: true })
+```
+- So for large dbs this option should be used
