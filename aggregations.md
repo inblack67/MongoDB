@@ -322,3 +322,64 @@ db.persons.aggregate([
     },
 ]).pretty()
 ```
+## $sum
+- Counts number of docs of a particular age
+- $sum: 1 => add 1 for every processed doc
+```sh
+db.persons.aggregate([
+    {
+        $group: {
+            _id: "$age",
+            count: {
+                $sum: 1
+            }
+        }
+    },
+]).pretty()
+```
+- O/P => 
+```sh
+{ "_id" : 31, "count" : 106 }
+{ "_id" : 33, "count" : 100 }
+{ "_id" : 21, "count" : 116 }
+...
+```
+- $unwind & $sum
+```sh
+db.persons.aggregate([
+    {
+        $unwind: "$tags"
+    },
+    {
+        $group: {
+            _id: "$tags",
+            count: {
+                $sum: 1
+            }
+        }
+    }
+]).pretty()
+```
+- O/P => 
+```sh
+- tempor appears 98 times and so on
+{ "_id" : "tempor", "count" : 98 }
+{ "_id" : "aute", "count" : 110 }
+...
+```
+
+- NumberInt(1.4) => 1
+
+## $avg
+```sh
+db.persons.aggregate([
+    {
+        $group: {
+            _id: "$eyeColor",
+            avgAge: {
+                $avg: "$age"
+            }
+        }
+    }
+]).pretty()
+```
