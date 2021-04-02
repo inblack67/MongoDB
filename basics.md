@@ -257,3 +257,26 @@ db.posts.find({ views: { $gte: 7 } })
 db.posts.find({ views: { $lt: 7 } })
 db.posts.find({ views: { $lte: 7 } })
 ```
+
+## Cursor
+- Change Iterator Size => 20 by default => cursor with 20 docs is sent by mongodb server
+```sh
+DBQuery.shellBatchSize = 10
+```
+### Cursor Iterate Methods
+- Assign cursor to the variable
+```sh
+var cursor = db.persons.find({}).pretty()
+```
+- Iterate one doc
+```sh
+cursor.next()
+```
+- Check if cursor has next doc
+```sh
+cursor.hasNext()
+```
+- Quantity of docs left in the cursor batch
+```sh
+cursor.objsLeftInBatch()
+```
