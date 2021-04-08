@@ -153,3 +153,20 @@ db.persons.find({
     "tags.0": "ad"
 }).pretty()
 ```
+## $all & $size
+- Array contains all specified value independent of order
+```sh
+db.persons.find({
+    tags: {
+        $all: ["ad", "eu"]
+    }
+}).pretty()
+```
+- Array is of certain size
+```sh
+db.persons.find({
+    tags: {
+        $size: 2
+    }
+}).pretty()
+```
