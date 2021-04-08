@@ -134,27 +134,37 @@ db.persons.find({
     }
 }).pretty()
 ```
+
 ## Query embedded docs
+
 ```sh
 db.persons.find({
     "company.location.country": "USA"
 }).pretty()
 ```
+
 ## Query Array by field value
+
 - Query by value
+
 ```sh
 db.persons.find({
     tags: "ad"
 }).pretty()
 ```
+
 - Query by index
+
 ```sh
 db.persons.find({
     "tags.0": "ad"
 }).pretty()
 ```
+
 ## $all & $size
+
 - Array contains all specified value independent of order
+
 ```sh
 db.persons.find({
     tags: {
@@ -162,11 +172,45 @@ db.persons.find({
     }
 }).pretty()
 ```
+
 - Array is of certain size
+
 ```sh
 db.persons.find({
     tags: {
         $size: 2
+    }
+}).pretty()
+```
+
+## Query Array of objects 
+
+- eg:-
+```sh
+{
+    friends: [
+        {
+            name: "ok",
+            age: 1
+        },
+        {
+            name: "ok",
+            age: 1
+        },
+    ]
+}
+```
+- Query:-
+```sh
+db.persons.find({
+    "friends.name": "ok"
+}).pretty()
+
+- Order matters (name, age)
+db.persons.find({
+    friends: {
+        name: "ok",
+        age: 1
     }
 }).pretty()
 ```
