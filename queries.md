@@ -277,3 +277,19 @@ db.persons.find({}, {
     age: 1
 }).pretty()
 ```
+
+## regex
+```sh
+db.persons.find({
+    name: {
+        $regex: /^ad$/i
+    }
+}).pretty()
+- or
+db.persons.find({
+    name: {
+        $regex: /^ad$/,
+        $options: "i"
+    }
+})
+```
