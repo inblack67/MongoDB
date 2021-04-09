@@ -266,3 +266,14 @@ db.persons.find({
 | Double | 1 | "double"
 | Date | 9 | "date"
 | ObjectId | 7 | "objectId"
+
+## Filter Fields
+- Mock GraphQL - filtering doc fields on the mongodb server itself
+- 1 => include (_id: 1 by default)
+- 0 => emit
+```sh
+db.persons.find({}, {
+    name: 1,
+    age: 1
+}).pretty()
+```
