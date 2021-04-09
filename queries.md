@@ -183,9 +183,10 @@ db.persons.find({
 }).pretty()
 ```
 
-## Query Array of objects 
+## Query Array of objects
 
 - eg:-
+
 ```sh
 {
     friends: [
@@ -200,7 +201,9 @@ db.persons.find({
     ]
 }
 ```
+
 - Query:-
+
 ```sh
 db.persons.find({
     "friends.name": "ok"
@@ -214,3 +217,52 @@ db.persons.find({
     }
 }).pretty()
 ```
+
+## $elemMatch
+
+- At least one nested doc in the array must match all conditions. Order of conditions does not matter
+
+```sh
+db.persons.find({
+  friends: {
+       $elemMatch: {
+       name: "Bob",
+       registered: false
+   }
+ }
+}).pretty()
+```
+
+## $exists & $type
+
+- **$exists** => certain field exists in the doc or not
+
+```sh
+db.persons.find({
+    tags: {
+        $exists: true
+    }
+}).pretty()
+```
+
+- **$type** => query by value and type
+```sh
+db.persons.find({
+    tags: {
+        $type: "array"
+    }
+}).pretty()
+```
+
+## BSON Types
+| Type |  Number ID | String ID
+| ---- |  ---- | ---
+| String | 2 | "string"
+| Object | 3 | "object"
+| Array | 4 | "array"
+| Boolean | 8 | "bool"
+| 32-bit Integer | 16 | "int"
+| 64-bit Integer | 18 | "long"
+| Double | 1 | "double"
+| Date | 9 | "date"
+| ObjectId | 7 | "objectId"
