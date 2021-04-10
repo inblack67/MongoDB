@@ -133,3 +133,20 @@ db.shop.update(
     }
 )
 ```
+
+## $currentDate
+- Set the value of the field to the current date
+- Add createdAt to all docs:-
+```sh
+db.shop.update(
+    {},
+    {
+        $currentDate: {
+            createdAt: true
+        }
+    },
+    {
+        multi: true
+    }
+)
+```
