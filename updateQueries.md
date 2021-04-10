@@ -92,25 +92,44 @@ db.shop.replaceOne(
     }
 )
 ```
-
-## Insert Dummy Data
-
+## Multiple Operators
 ```sh
-db.shop.insertMany([
+db.shop.update({
+    index: 1
+}, {
+    $set: {
+        hello: "worlds"
+    },
+    $unset: {
+        cart: 1
+    }
+})
+```
+
+## $rename
+```sh
+db.shop.update({
+    index: 1
+}, {
+    $rename: {
+        hello: "greet"
+    }
+})
+```
+```sh
+db.shop.update(
     {
-        index: 1
+        index: {
+            $exists: true
+        }
     },
     {
-        index: 2
+        $rename: {
+            index: "INDEX"
+        }
     },
     {
-        index: 3
-    },
-    {
-        index: 4
-    },
-    {
-        index: 5
-    },
-])
+        multi: true
+    }
+)
 ```
