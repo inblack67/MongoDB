@@ -66,6 +66,7 @@ db.shop.update({}, {
 ```
 
 ## updateOne()
+
 - Returns:-
 
 ```sh
@@ -77,10 +78,13 @@ db.shop.update({}, {
 ```
 
 ## updateMany()
+
 - Same as updateOne but for multi docs
 
 ## replaceOne()
+
 - Replace one doc
+
 ```sh
 db.shop.replaceOne(
     {
@@ -92,7 +96,9 @@ db.shop.replaceOne(
     }
 )
 ```
+
 ## Multiple Operators
+
 ```sh
 db.shop.update({
     index: 1
@@ -107,6 +113,7 @@ db.shop.update({
 ```
 
 ## $rename
+
 ```sh
 db.shop.update({
     index: 1
@@ -116,6 +123,7 @@ db.shop.update({
     }
 })
 ```
+
 ```sh
 db.shop.update(
     {
@@ -135,8 +143,10 @@ db.shop.update(
 ```
 
 ## $currentDate
+
 - Set the value of the field to the current date
 - Add createdAt to all docs:-
+
 ```sh
 db.shop.update(
     {},
@@ -149,4 +159,103 @@ db.shop.update(
         multi: true
     }
 )
+```
+
+## Array update operators
+
+- $ - positional operator
+- $push - adds element to the array
+- $addToSet - adds el but ensure uniqueness
+- $pull - deletes an element
+- $pullAll
+- $pop
+
+## $push
+
+- Appends element to the array
+- If array does not exist then it will be created automatically
+
+```sh
+db.shop.update(
+    {},
+    {
+        $push: {
+            cart: "veggies"
+        }
+    },
+    {
+        multi: true
+    }
+)
+```
+
+## $push & $each
+
+- Push mutiple elements in an array
+
+```sh
+db.shop.update(
+    {},
+    {
+        $push: {
+            cart: {
+                $each: ["item1", "item2"]
+            }
+        }
+    },
+    {
+        multi: true
+    }
+)
+```
+
+## $addToSet
+
+- Appends element to the array if it doesn't exist already
+
+```sh
+db.shop.update(
+    {},
+    {
+        $addToSet: {
+            cart: "item1"
+        }
+    },
+    {
+        multi: true
+    }
+)
+```
+
+## $pop
+
+- 1 => last element will be deleted
+- -1 => first element will be deleted
+- If only one element in the array then 1 or -1 => that element will be deleted
+
+```sh
+db.shop.update({
+    INDEX: 1
+}, {
+    $pop: {
+        cart: 1
+    }
+})
+```
+
+## $pull
+
+- Removes all elements from the array matching specified condition
+
+```sh
+db.shop.update({
+    INDEX: 1
+}, {
+    $pull: {
+        cart: "item1",
+        spent: {
+            $gt: 50
+        }
+    }
+})
 ```
