@@ -259,3 +259,127 @@ db.shop.update({
     }
 })
 ```
+
+## $pullAll
+
+- Removes all elements in the array that match specified valus
+- Similar occurences will also be deleted
+- No conditions
+
+```sh
+db.shop.update(
+    {},
+    {
+        $pullAll: {
+            cart: ["item1","item2"]
+        }
+    },
+    {
+        multi: true
+    }
+)
+```
+
+- Equivalent to
+
+```sh
+db.shop.update(
+    {},
+    {
+        $pull: {
+            cart: {
+                $in: ["item1", "item2"]
+            }
+        }
+    },
+    {
+        multi: true
+    }
+)
+```
+
+- $pull uses queries, $pullAll does not
+
+## $
+
+- Positional Operator
+- Points to certain element in the array that machted query
+- Refer certain element of the array:-
+
+```sh
+db.shop.update(
+    {
+        cart: "item2"
+    },
+    {
+        $set: {
+            "cart.$": "updatedItem2"
+        }
+    },
+    {
+        multi: true
+    }
+)
+```
+
+- For array of objects
+  ```sh
+  {
+      $set: {
+          "<arrayField>.$.prop": <value>
+      }
+  }
+  ```
+
+## $ in nested docs
+
+- Data:-
+
+```sh
+{
+    cart: [
+        {
+            title: "TV",
+            price: 20,
+            quantity: 2
+        },
+        {
+            title: "Phone",
+            price: 10,
+            quantity: 3
+        }
+    ]
+}
+```
+
+- Update quantity to 4 with title "Phone"
+
+```sh
+db.shop.update(
+    {
+        "cart.title": "Phone"
+    },
+    {
+        "cart.$.title": 4
+    },
+)
+```
+
+- With $elemMatch
+
+```sh
+db.shop.update(
+    {
+        cart: {
+            $elemMatch: {
+                title: "Phone"
+            }
+        }
+    },
+    {
+        $set: {
+            "cart.$.quantitiy": 4
+        }
+    }
+)
+```
